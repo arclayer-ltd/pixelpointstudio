@@ -9,8 +9,8 @@ colors:
   mute: "#6E6C64"
   hairline: "#2A2924"
   hairline-on-bone: "#DDD8CC"
-  point: "#C8EF2A"
-  point-deep: "#9EC21A"
+  point: "#62E000"
+  point-deep: "#4CB800"
   on-point: "#0A0A0A"
   on-carbon: "#F6F3EA"
   danger: "#E23B2E"
@@ -97,7 +97,7 @@ components:
 
 Pixelpoint is a studio that ships websites and apps. The identity has one idea: **the Point is a pixel**. Carbon lettering. A single voltage green used like Ferrari uses red — scarce, never decorative. The live site at pixelpointstudio.com is the anti-reference: Arial, a muddy `#bad530`, a second Tailwind-blue system, 24px pills, and glow blobs. This file replaces that world.
 
-The wordmark is outlined SVG in `brand/`. Never set the logo in live web text. Anybody is the display skeleton and the campaign face; Red Hat Text is the reading face. The monogram is a notched pixel that has dropped a smaller square — a pixel, and a point.
+The wordmark is outlined SVG in `brand/`. Never set the logo in live web text. Anybody is the display skeleton and the campaign face; Red Hat Text is the reading face. The signature is a Point-green square used as a period after the word — not as an i-tittle. The monogram is a geometric P with a square counter.
 
 Craft bar (named, not copied): Nike wordmark certainty, On Running polarity (black/white + product color), Linear’s single-accent discipline.
 
@@ -105,11 +105,11 @@ Craft bar (named, not copied): Nike wordmark certainty, On Running polarity (bla
 
 **Carbon** `#0A0A0A` is the home surface. **Bone** `#F3F0E7` is the paper surface. **Point** `#C8EF2A` is the only brand chroma.
 
-Point is the evolved lime. The live `#bad530` was olive, low-chroma, and used as decoration (glows, blobs). Point is hotter and greener than that olive, and cooler than Nike Volt (`#CEFF00`) — close enough to feel like performance, far enough to own.
+Point is hotter and greener than the live olive `#bad530`, and shifted off Nike Volt (`#CEFF00`, hue ~72°) to hue ~94° so it is not a highlighter twin.
 
 Rules:
 
-- Letters of the wordmark are Carbon or Bone. The square tittles are Point. That is the only place Point is required.
+- Letters of the wordmark are Carbon or Bone. The Point square sits after the word as a period. Never color the i-tittles.
 - CTAs may be Point, square-cornered, Carbon type on top. One primary per view.
 - Never set Point as body text on Bone (contrast fails). Never set Point as a page fill except a full-bleed poster or a 16px swatch.
 - Kill the live site’s `--primary-blue` / `--secondary-blue` / `--accent-blue`. Blue is not a Pixelpoint color.
@@ -117,7 +117,7 @@ Rules:
 
 ## Typography
 
-**Wordmark** is not a font. It is `brand/wordmark.svg` (mixed-case primary) and `brand/wordmark-caps.svg` (campaign / jersey). Square tittles replace the i-dots. Tracking and outlines are locked in the SVG.
+**Wordmark** is not a font. It is `brand/wordmark.svg` (mixed-case primary) and `brand/wordmark-caps.svg` (campaign / jersey). A Point square period follows the word. Tracking and outlines are locked in the SVG. Minimum digital height: 28px so the period stays a real square.
 
 **Display** is Anybody (variable; on the web, weight 700, width toward condensed). Line-height under 1. Tight negative tracking. Uppercase for campaign lines; mixed case for studio headlines.
 
@@ -149,22 +149,22 @@ Square is the brand geometry because the Point is a pixel. Controls are `0–2px
 
 **Wordmark.** Primary mixed-case on Bone (`wordmark.svg`). Inverse on Carbon (`wordmark-inverse.svg`). Caps lockup for sports-scale campaign (`wordmark-caps.svg`). Studio lockup when the legal name must appear (`lockup.svg`). Clear space: one cap-height of the word on all sides. Minimum digital width: 120px for mixed, 96px for caps.
 
-**Monogram.** `monogram.svg` / `app-icon.svg` (notched pixel). `favicon.svg` is the two-square pair — it survives 16px. Never redraw with rounded corners or gradients.
+**Monogram.** `monogram.svg` / `app-icon.svg` / `favicon.svg` are the same geometric P with a Point square counter. Never a second drawing for small sizes. Never rounded corners or gradients.
 
 ## Do's and Don'ts
 
 Do:
 
-- Put the square tittle on both i’s in mixed-case **Pixelpoint**, and on the first I only in **PIXELPOINT**.
-- Use Point as a scarce signal: tittles, one CTA, one monogram.
+- Put the Point square after the word, on the baseline, as a period. Mixed-case and caps both.
+- Use Point as a scarce signal: the period, the P-counter, one CTA.
 - Pair Anybody display with Red Hat Text.
-- Hold carbon/bone polarity the way On holds black/white.
+- Hold carbon/bone polarity. Keep chroma out of the letters.
 
 Don't:
 
 - Don’t set the logo in Arial, Inter, or live text.
-- Don’t use `#bad530`, Tailwind blue, purple, or gradients as brand color.
+- Don’t use `#bad530`, `#C8EF2A` (too close to Nike Volt), Tailwind blue, purple, or gradients as brand color.
 - Don’t add glow, blobs, glass, or 24px pills.
-- Don’t put a tittle on the second I of PIXELPOINT.
+- Don’t color the i-tittles. That was the live site’s plus-shaped *o* in another costume.
 - Don’t copy the Nike swoosh, On wordmark, Linear mark, or Metalab layout.
 - Don’t claim portfolio lifts or testimonials that are not in `PRODUCT.md`.

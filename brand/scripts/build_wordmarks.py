@@ -23,7 +23,7 @@ SPORT_PATH = os.path.join(FONT_DIR, "Anybody-Sport.ttf")
 CAPTION_PATH = os.path.join(FONT_DIR, "Anybody-Caption.ttf")
 DISPLAY_PATH = os.path.join(FONT_DIR, "Anybody-Display.ttf")
 
-POINT = "#C8EF2A"
+POINT = "#62E000"
 CARBON = "#0A0A0A"
 BONE = "#F3F0E7"
 PAPER = "#FAF8F2"
@@ -84,6 +84,8 @@ def compose(
     letter_fill: str,
     point_fill: str,
     square_over_stem: float = 1.05,
+    trailing_point: bool = False,
+    trailing_ratio: float = 0.38,
 ) -> tuple[str, float, float]:
     """Return (inner svg, width, height) with origin at top-left ink + pad."""
     square_at = set(square_at)
@@ -143,10 +145,21 @@ def compose(
         if idx < len(infos) - 1:
             pen_x += tracking_em * upem
 
+    if trailing_point and glyphs_out:
+        last = glyphs_out[-1]
+        cap = cap_height(font) * scale
+        side = cap * trailing_ratio
+        gap = cap * 0.16
+        sx = last["xmax"] + gap
+        sy = last["ybot"] - side
+        squares.append((sx, sy, side))
+
     xs = [g["xmin"] for g in glyphs_out] + [s[0] for s in squares]
     xe = [g["xmax"] for g in glyphs_out] + [s[0] + s[2] for s in squares]
     yt = [g["ytop"] for g in glyphs_out] + [s[1] for s in squares]
     yb = [g["ybot"] for g in glyphs_out] + [s[1] + s[2] for s in squares]
+    if not xs:
+        raise RuntimeError("no ink")
     xmin, xmax, ymin, ymax = min(xs), max(xe), min(yt), max(yb)
 
     pad = size * 0.06
@@ -182,6 +195,7 @@ def lockup(
     word_track: float,
     cap_size: float,
     cap_track: float,
+    trailing_point: bool = True,
 ) -> tuple[str, float, float]:
     w_inner, ww, wh = compose(
         word_font,
@@ -191,6 +205,7 @@ def lockup(
         square_at=squares,
         letter_fill=letter_fill,
         point_fill=point_fill,
+        trailing_point=trailing_point,
     )
     c_inner, cw, ch = compose(
         cap_font,
@@ -253,6 +268,37 @@ def monogram_notch(size: int = 512, fg: str = POINT, bg: str | None = None) -> s
 '''
 
 
+def p_mark(size: int = 512, fg: str = INK_ON_DARK, point: str = POINT, bg: str | None = None) -> str:
+    """Geometric P: square bowl, square counter. One drawing from 16px to 512."""
+    stem = size * 0.16
+    cap_h = size * 0.52
+    bowl = size * 0.30
+    counter = size * 0.12
+    ox = (size - (stem * 0.45 + bowl)) / 2
+    oy = (size - cap_h) / 2
+    stem_x, stem_y = ox, oy
+    bowl_x = stem_x + stem * 0.42
+    bowl_y = stem_y
+    cx = bowl_x + bowl - counter - size * 0.055
+    cy = bowl_y + (bowl - counter) * 0.38
+    bg_el = f'<rect width="{size}" height="{size}" fill="{bg}"/>' if bg else ""
+    # Union silhouette so stem∩bowl is not punched by evenodd.
+    right = bowl_x + bowl
+    mid = bowl_y + bowl
+    bottom = stem_y + cap_h
+    inner_stem = stem_x + stem
+    outer = (
+        f"M{stem_x:.2f},{stem_y:.2f}H{right:.2f}V{mid:.2f}H{inner_stem:.2f}"
+        f"V{bottom:.2f}H{stem_x:.2f}Z"
+    )
+    hole = f"M{cx:.2f},{cy:.2f}h{counter:.2f}v{counter:.2f}h{-counter:.2f}z"
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}" role="img" aria-label="Pixelpoint">
+{bg_el}<path fill="{fg}" fill-rule="evenodd" d="{outer} {hole}"/>
+<rect x="{cx:.2f}" y="{cy:.2f}" width="{counter:.2f}" height="{counter:.2f}" fill="{point}"/>
+</svg>
+'''
+
+
 def write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w") as f:
@@ -265,92 +311,85 @@ def main() -> None:
     mixed = load_ttf(FONT_PATH)
     caption = load_ttf(CAPTION_PATH)
     display = load_ttf(DISPLAY_PATH)
-    mixed_tight = mixed
 
-    mixed_sq = {1, 7}  # i in Pixel, i in point
-    caps_sq = {1}      # first I only
-
+    none: set[int] = set()
     os.makedirs(os.path.join(OUT, "candidates"), exist_ok=True)
 
-    # --- production ---
+    kw = dict(square_at=none, trailing_point=True, trailing_ratio=0.38)
+
     inner, w, h = compose(
-        mixed, "Pixelpoint", size=240, tracking_em=-0.022,
-        square_at=mixed_sq, letter_fill=CARBON, point_fill=POINT,
+        mixed, "Pixelpoint", size=240, tracking_em=-0.012,
+        letter_fill=CARBON, point_fill=POINT, **kw,
     )
     write(os.path.join(OUT, "wordmark.svg"), svg(inner, w, h, label="Pixelpoint"))
     write(os.path.join(OUT, "wordmark-on-bone.svg"), svg(inner, w, h, BONE))
 
     inner_d, w, h = compose(
-        mixed, "Pixelpoint", size=240, tracking_em=-0.022,
-        square_at=mixed_sq, letter_fill=INK_ON_DARK, point_fill=POINT,
+        mixed, "Pixelpoint", size=240, tracking_em=-0.012,
+        letter_fill=INK_ON_DARK, point_fill=POINT, **kw,
     )
     write(os.path.join(OUT, "wordmark-on-dark.svg"), svg(inner_d, w, h, CARBON))
     write(os.path.join(OUT, "wordmark-inverse.svg"), svg(inner_d, w, h, label="Pixelpoint"))
 
     inner, w, h = compose(
-        sport, "PIXELPOINT", size=240, tracking_em=-0.01,
-        square_at=caps_sq, letter_fill=CARBON, point_fill=POINT, square_over_stem=1.12,
+        sport, "PIXELPOINT", size=240, tracking_em=-0.008,
+        letter_fill=CARBON, point_fill=POINT, **kw,
     )
     write(os.path.join(OUT, "wordmark-caps.svg"), svg(inner, w, h, label="PIXELPOINT"))
     write(os.path.join(OUT, "wordmark-caps-on-bone.svg"), svg(inner, w, h, BONE))
     inner_d, w, h = compose(
-        sport, "PIXELPOINT", size=240, tracking_em=-0.01,
-        square_at=caps_sq, letter_fill=INK_ON_DARK, point_fill=POINT, square_over_stem=1.12,
+        sport, "PIXELPOINT", size=240, tracking_em=-0.008,
+        letter_fill=INK_ON_DARK, point_fill=POINT, **kw,
     )
     write(os.path.join(OUT, "wordmark-caps-on-dark.svg"), svg(inner_d, w, h, CARBON))
     write(os.path.join(OUT, "wordmark-caps-inverse.svg"), svg(inner_d, w, h, label="PIXELPOINT"))
 
-    # one-color (print / embroidery)
     inner, w, h = compose(
-        mixed, "Pixelpoint", size=240, tracking_em=-0.022,
-        square_at=mixed_sq, letter_fill=CARBON, point_fill=CARBON,
+        mixed, "Pixelpoint", size=240, tracking_em=-0.012,
+        letter_fill=CARBON, point_fill=CARBON, **kw,
     )
     write(os.path.join(OUT, "wordmark-mono.svg"), svg(inner, w, h))
 
     inner, w, h = lockup(
-        mixed, caption, "Pixelpoint", mixed_sq,
+        mixed, caption, "Pixelpoint", none,
         letter_fill=CARBON, point_fill=POINT,
-        word_size=240, word_track=-0.022,
+        word_size=240, word_track=-0.012,
         cap_size=36, cap_track=0.42,
+        trailing_point=True,
     )
     write(os.path.join(OUT, "lockup.svg"), svg(inner, w, h, label="Pixelpoint Studio"))
     write(os.path.join(OUT, "lockup-on-bone.svg"), svg(inner, w, h, BONE))
 
     inner, w, h = lockup(
-        sport, caption, "PIXELPOINT", caps_sq,
+        sport, caption, "PIXELPOINT", none,
         letter_fill=CARBON, point_fill=POINT,
-        word_size=240, word_track=-0.01,
+        word_size=240, word_track=-0.008,
         cap_size=34, cap_track=0.48,
+        trailing_point=True,
     )
     write(os.path.join(OUT, "lockup-caps.svg"), svg(inner, w, h, BONE, label="PIXELPOINT STUDIO"))
 
     inner, w, h = lockup(
-        mixed, caption, "Pixelpoint", mixed_sq,
+        mixed, caption, "Pixelpoint", none,
         letter_fill=INK_ON_DARK, point_fill=POINT,
-        word_size=240, word_track=-0.022,
+        word_size=240, word_track=-0.012,
         cap_size=36, cap_track=0.42,
+        trailing_point=True,
     )
     write(os.path.join(OUT, "lockup-on-dark.svg"), svg(inner, w, h, CARBON, label="Pixelpoint Studio"))
 
-    write(os.path.join(OUT, "monogram.svg"), monogram_notch(512, fg=POINT, bg=None))
-    write(os.path.join(OUT, "monogram-on-dark.svg"), monogram_notch(512, fg=POINT, bg=CARBON))
-    write(os.path.join(OUT, "monogram-on-bone.svg"), monogram_notch(512, fg=CARBON, bg=BONE))
+    write(os.path.join(OUT, "monogram.svg"), p_mark(512, fg=CARBON, point=POINT, bg=None))
+    write(os.path.join(OUT, "monogram-on-dark.svg"), p_mark(512, fg=INK_ON_DARK, point=POINT, bg=CARBON))
+    write(os.path.join(OUT, "monogram-on-bone.svg"), p_mark(512, fg=CARBON, point=POINT, bg=BONE))
     write(os.path.join(OUT, "monogram-pair.svg"), monogram_pair(512, fg=POINT, bg=None))
-    write(os.path.join(OUT, "favicon.svg"), monogram_pair(32, fg=POINT, bg=CARBON))
-    write(os.path.join(OUT, "app-icon.svg"), monogram_notch(512, fg=POINT, bg=CARBON))
+    write(os.path.join(OUT, "favicon.svg"), p_mark(32, fg=INK_ON_DARK, point=POINT, bg=CARBON))
+    write(os.path.join(OUT, "app-icon.svg"), p_mark(512, fg=INK_ON_DARK, point=POINT, bg=CARBON))
 
-    # candidates for the critic
-    for name, font, text, sq, track, over in [
-        ("mixed-72-700", mixed, "Pixelpoint", mixed_sq, -0.022, 1.05),
-        ("mixed-68-750", mixed_tight, "Pixelpoint", mixed_sq, -0.03, 1.08),
-        ("display-80-700", display, "Pixelpoint", mixed_sq, -0.018, 1.02),
-        ("sport-58-800", sport, "PIXELPOINT", caps_sq, -0.01, 1.12),
-    ]:
-        inner, w, h = compose(
-            font, text, size=240, tracking_em=track, square_at=sq,
-            letter_fill=CARBON, point_fill=POINT, square_over_stem=over,
-        )
-        write(os.path.join(OUT, "candidates", f"{name}.svg"), svg(inner, w, h, BONE))
+    inner, w, h = compose(
+        display, "Pixelpoint", size=240, tracking_em=-0.01,
+        letter_fill=CARBON, point_fill=POINT, **kw,
+    )
+    write(os.path.join(OUT, "candidates", "display-period.svg"), svg(inner, w, h, BONE))
 
 
 if __name__ == "__main__":
