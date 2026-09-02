@@ -133,6 +133,12 @@
       "skillPath": "skills/free-tools/SKILL.md",
       "computedHash": "ab40a39f8b10a0ee423f47005a49defcae4e9b82b4c6e5be1d6c67d7f963973e"
     },
+    "gauntlet-loop": {
+      "source": "robonuggets/gauntlet-loop",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/gauntlet-loop/SKILL.md",
+      "computedHash": "dc7a515354caa61abe7a3552fbe598bae3cb1c069e25e3c135ee0d5a2e567eb4"
+    },
     "image": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
