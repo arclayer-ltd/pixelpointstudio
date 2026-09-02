@@ -1,0 +1,31 @@
+/* Pixelpoint Studio — identity tokens. Source of truth: /DESIGN.md */
+:root {
+  --carbon: #0a0a0a;
+  --ink: #141414;
+  --bone: #f3f0e7;
+  --paper: #faf8f2;
+  --mute: #6e6c64;
+  --hairline: #2a2924;
+  --hairline-on-bone: #ddd8cc;
+  --point: #62e000;
+  --point-deep: #4cb800;
+  --on-point: #0a0a0a;
+  --on-carbon: #f6f3ea;
+  --danger: #e23b2e;
+
+  --font-display: "Anybody", "Arial Narrow", sans-serif;
+  --font-text: "Red Hat Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 104px;
+
+  --radius-none: 0;
+  --radius-control: 2px;
+  --radius-full: 999px;
+}

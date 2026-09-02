@@ -1,0 +1,4 @@
+brand/candidates/
+brand/previews/
+*.pyc
+__pycache__/
