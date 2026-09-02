@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pixelpoint — Identity</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,200..800&family=Red+Hat+Text:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./tokens.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--carbon); color: var(--on-carbon); font-family: var(--font-text); }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    .wrap { width: min(1280px, calc(100% - 48px)); margin: 0 auto; }
+    .kicker {
+      font-family: var(--font-display);
+      font-weight: 520;
+      font-stretch: 100%;
+      font-size: 11px;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--point);
+    }
+    .display {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-stretch: 70%;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      text-wrap: balance;
+    }
+    .muted { color: var(--mute); }
+    nav {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px;
+      background: rgba(10,10,10,0.92);
+      border-bottom: 1px solid var(--hairline);
+      backdrop-filter: blur(12px);
+    }
+    nav img { height: 22px; width: auto; }
+    nav span { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--mute); }
+    .hero { min-height: 100vh; display: grid; place-items: center; padding: 80px 24px 64px; }
+    .hero-inner { width: min(1100px, 100%); }
+    .hero-inner .mark { width: min(920px, 100%); margin-bottom: 40px; }
+    .hero h1 { font-size: clamp(42px, 8vw, 88px); max-width: 16ch; }
+    .hero p { margin-top: 24px; max-width: 46ch; font-size: 18px; line-height: 1.5; color: #c8c4b8; }
+    .band { padding: 104px 0; }
+    .band-bone { background: var(--bone); color: var(--carbon); }
+    .band-paper { background: var(--paper); color: var(--carbon); }
+    .band h2 { font-size: clamp(36px, 6vw, 72px); margin: 16px 0 40px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .card {
+      border: 1px solid var(--hairline-on-bone);
+      padding: 28px;
+      background: var(--paper);
+    }
+    .card.dark {
+      background: var(--carbon);
+      color: var(--on-carbon);
+      border-color: var(--hairline);
+    }
+    .card h3 {
+      font-family: var(--font-display);
+      font-stretch: 80%;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .swatch { min-height: 160px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+    .swatch code, .mono {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .panel {
+      display: grid; place-items: center;
+      min-height: 220px; padding: 40px 32px;
+    }
+    .gap-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; }
+    .old {
+      background: #fff;
+      color: #000;
+      padding: 32px;
+      font-family: Arial, Helvetica, sans-serif;
+      border: 1px solid #e5e5e5;
+    }
+    .old .logo { font-size: 24px; font-weight: 700; }
+    .old .chip {
+      display: inline-block; margin-top: 20px;
+      background: #bad530; color: #000;
+      padding: 12px 28px; border-radius: 24px; font-size: 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    }
+    .old .blob {
+      margin-top: 24px; width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(154, 255, 0, 0.45); filter: blur(12px);
+    }
+    .arrow {
+      align-self: center;
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--mute);
+    }
+    .new-preview {
+      background: var(--carbon);
+      color: var(--on-carbon);
+      padding: 32px;
+    }
+    .new-preview .cta {
+      margin-top: 24px; display: inline-block;
+      background: var(--point); color: var(--carbon);
+      font-family: var(--font-display);
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 13px;
+      padding: 16px 28px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th, td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--hairline-on-bone); vertical-align: top; }
+    th { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; font-weight: 520; color: var(--mute); }
+    .type-row { padding: 20px 0; border-bottom: 1px solid var(--hairline); }
+    .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .do, .dont { padding: 32px; }
+    .do { background: var(--carbon); color: var(--on-carbon); }
+    .dont { background: #1a1210; color: #f3dcd8; }
+    .do h3 { color: var(--point); }
+    .dont h3 { color: #e23b2e; }
+    ul { padding-left: 18px; line-height: 1.55; }
+    li + li { margin-top: 8px; }
+    footer { padding: 64px 24px 80px; color: var(--mute); font-size: 14px; }
+    @media (max-width: 860px) {
+      .grid-2, .grid-3, .grid-4, .gap-row, .rules { grid-template-columns: 1fr; }
+      .arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <img src="./wordmark-inverse.svg" alt="Pixelpoint" />
+    <span>Identity 001</span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="kicker">Pixelpoint Studio</p>
+      <img class="mark" src="./wordmark-inverse.svg" alt="Pixelpoint wordmark" />
+      <h1 class="display">The point is a pixel.</h1>
+      <p>One idea. Carbon lettering. A square tittle in Point green. Built to sit next to Nike, On, and Linear on craft — not to copy them.</p>
+    </div>
+  </header>
+
+  <section class="band band-bone">
+    <div class="wrap">
+      <p class="kicker">The gap</p>
+      <h2 class="display">What was missing.</h2>
+      <div class="gap-row">
+        <div class="old">
+          <div class="logo">Pixelpoint Studio</div>
+          <p style="margin-top:12px;color:#666;font-size:14px;line-height:1.5">Arial 24px / 700. No custom mark. Accent <code>#bad530</code> plus a second Tailwind blue system. 24px pills. Glow blobs.</p>
+          <span class="chip">Let’s Talk</span>
+          <div class="blob"></div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="new-preview">
+          <img src="./wordmark-inverse.svg" alt="" style="height:36px;width:auto" />
+          <p style="margin-top:14px;color:#c8c4b8;font-size:15px;line-height:1.5">Outlined wordmark. One voltage color. Square geometry. No glow, no blue, no pill.</p>
+          <span class="cta">Start a project</span>
+        </div>
+      </div>
+      <table style="margin-top:48px">
+        <thead>
+          <tr><th>Gap</th><th>Live site</th><th>This system</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Wordmark</td><td>Plain navbar text</td><td>Outlined SVG. Square tittles. Caps + mixed lockups.</td></tr>
+          <tr><td>Color</td><td>Muddy lime + Tailwind blue</td><td>Carbon / Bone / Point. Blue deleted.</td></tr>
+          <tr><td>Type</td><td>Arial / Roboto / system-ui</td><td>Anybody display. Red Hat Text. Logo is not a font.</td></tr>
+          <tr><td>Mark</td><td>None</td><td>Notched pixel monogram + 16px pair favicon.</td></tr>
+          <tr><td>Chrome</td><td>Pills, glow, 22px shadow</td><td>Square CTAs. Hairline. Polarity.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="kicker">Wordmark</p>
+      <h2 class="display">Primary + campaign.</h2>
+      <div class="grid-2">
+        <div class="panel" style="background:var(--bone)">
+          <img src="./wordmark.svg" alt="Pixelpoint on bone" />
+        </div>
+        <div class="panel" style="background:var(--carbon);border:1px solid var(--hairline)">
+          <img src="./wordmark-inverse.svg" alt="Pixelpoint inverse" />
+        </div>
+        <div class="panel" style="background:var(--bone)">
+          <img src="./wordmark-caps.svg" alt="PIXELPOINT caps" />
+        </div>
+        <div class="panel" style="background:var(--carbon);border:1px solid var(--hairline)">
+          <img src="./wordmark-caps-inverse.svg" alt="PIXELPOINT inverse" />
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="panel" style="background:var(--bone)">
+          <img src="./lockup.svg" alt="Pixelpoint Studio lockup" style="max-width:420px" />
+        </div>
+        <div class="panel" style="background:var(--carbon);border:1px solid var(--hairline)">
+          <img src="./lockup-on-dark.svg" alt="Lockup on carbon" style="max-width:420px" />
+        </div>
+      </div>
+      <p class="muted" style="margin-top:24px;max-width:62ch">Mixed-case is the studio signature. Caps is the jersey. Both i-dots are Point squares in mixed-case; only the first I carries the square in PIXELPOINT. Never typeset the logo live.</p>
+    </div>
+  </section>
+
+  <section class="band band-paper">
+    <div class="wrap">
+      <p class="kicker">Monogram</p>
+      <h2 class="display">A pixel that dropped a point.</h2>
+      <div class="grid-3">
+        <div class="panel dark" style="background:var(--carbon)">
+          <img src="./app-icon.svg" alt="App icon" style="width:220px" />
+        </div>
+        <div class="panel" style="background:var(--bone)">
+          <img src="./monogram-on-bone.svg" alt="Monogram on bone" style="width:220px" />
+        </div>
+        <div class="panel" style="background:var(--carbon)">
+          <img src="./favicon.svg" alt="Favicon" style="width:96px;image-rendering:pixelated" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="kicker">Color</p>
+      <h2 class="display">Three colors. One voltage.</h2>
+      <div class="grid-4">
+        <div class="swatch" style="background:#0A0A0A;color:#F6F3EA"><strong>Carbon</strong><code>#0A0A0A</code></div>
+        <div class="swatch" style="background:#F3F0E7;color:#0A0A0A"><strong>Bone</strong><code>#F3F0E7</code></div>
+        <div class="swatch" style="background:#C8EF2A;color:#0A0A0A"><strong>Point</strong><code>#C8EF2A</code></div>
+        <div class="swatch" style="background:#FAF8F2;color:#0A0A0A;border:1px solid #DDD8CC"><strong>Paper</strong><code>#FAF8F2</code></div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="swatch" style="background:#bad530;color:#0A0A0A">
+          <strong>Retired</strong>
+          <code>live #bad530 — too olive, used as glow</code>
+        </div>
+        <div class="swatch" style="background:#2563eb;color:#fff">
+          <strong>Deleted</strong>
+          <code>Tailwind blue — not ours</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-bone">
+    <div class="wrap">
+      <p class="kicker">Type</p>
+      <h2 class="display">Anybody, then Red Hat Text.</h2>
+      <div class="type-row">
+        <p class="kicker" style="color:var(--mute)">Display / Anybody 700 condensed</p>
+        <p class="display" style="font-size:clamp(40px,7vw,84px);margin-top:8px">Websites and apps built to ship.</p>
+      </div>
+      <div class="type-row">
+        <p class="kicker" style="color:var(--mute)">Text / Red Hat Text 400</p>
+        <p style="font-size:18px;max-width:54ch;margin-top:8px">Design and engineering in one room. A dated plan before work. The identity should feel inevitable at a glance — not like a Bootstrap theme with a lime overlay.</p>
+      </div>
+      <div class="type-row">
+        <p class="kicker" style="color:var(--mute)">Caption / Anybody 520 tracked</p>
+        <p style="font-family:var(--font-display);font-weight:520;letter-spacing:0.42em;font-size:13px;margin-top:8px">STUDIO</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="kicker">Rules</p>
+      <h2 class="display">Hold the line.</h2>
+      <div class="rules">
+        <div class="do">
+          <h3 class="display" style="font-size:32px;margin-bottom:16px">Do</h3>
+          <ul>
+            <li>Carbon lettering, Point squares, nothing else in the mark.</li>
+            <li>One Point CTA per view, square corners.</li>
+            <li>Clear space: one cap-height around the wordmark.</li>
+            <li>Favicon = two-square pair. App icon = notched pixel.</li>
+            <li>Campaign type can be huge. UI type stays quiet.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3 class="display" style="font-size:32px;margin-bottom:16px">Don’t</h3>
+          <ul>
+            <li>Don’t set the logo in Arial, Inter, or live text.</li>
+            <li>Don’t bring back #bad530, blue, purple, or glow blobs.</li>
+            <li>Don’t round the squares. Don’t pill the buttons.</li>
+            <li>Don’t tittle the second I of PIXELPOINT.</li>
+            <li>Don’t copy Nike, On, Linear, or Metalab.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    Pixelpoint Studio identity 001 · Assets in <code>/brand</code> · Tokens in <code>DESIGN.md</code>
+  </footer>
+</body>
+</html>
