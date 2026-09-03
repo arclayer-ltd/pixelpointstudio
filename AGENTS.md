@@ -2,6 +2,8 @@
 
 **Locked product:** OwnerShot Ads. Read `PRODUCT.md` and `.agents/product-marketing.md` before any product, marketing, or UI work. Do not pivot the idea.
 
+**Full build:** paste `docs/MASTER_PROMPT.md` into a new Grok 4.6 Cloud Agent run. That prompt is YOLO from phase 0 to SHIP, with Human User + Creative Director sub-agents. Skill: `.agents/skills/ownershot-yolo/SKILL.md`.
+
 These SEO skills are the **default workflow** for this repository. Future Cursor agents, Cloud Agents, and other tools that read `AGENTS.md` must treat them as installed project skills — not optional extras.
 
 ## Default SEO skills
