@@ -85,7 +85,7 @@ export function Field({
       </span>
       <input
         {...props}
-        className="min-h-11 w-full border border-hairline bg-paper px-3 text-[16px] text-carbon outline-none focus:border-carbon"
+        className="min-h-11 w-full border border-hairline-bone bg-paper px-3 text-[16px] text-carbon outline-none focus:border-carbon"
       />
       {error ? (
         <span className="mt-1 block text-[13px] text-danger">{error}</span>

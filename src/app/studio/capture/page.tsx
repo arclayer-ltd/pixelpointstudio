@@ -117,7 +117,7 @@ function CaptureInner() {
       ) : null}
       {error ? <p className="mt-3 text-danger">{error}</p> : null}
       <CarbonButton
-        className="mt-6 w-full"
+        className="mt-8 mb-4 w-full"
         disabled={!job?.coverUrl}
         onClick={() => job && router.push(`/studio/facts?job=${job.id}`)}
       >

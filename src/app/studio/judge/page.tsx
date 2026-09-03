@@ -60,7 +60,7 @@ function JudgeInner() {
       <ScreenTitle
         kicker="On the still"
         title="Keep or reject"
-        sub="Judge the result here. Not in a chat thread."
+        sub="Keep one still to open Motion. Reject and Regen stay on this frame — not in a chat thread."
       />
       <div className="aspect-[4/5] overflow-hidden bg-carbon">
         {active ? (
@@ -91,7 +91,7 @@ function JudgeInner() {
         disabled={!kept}
         onClick={() => job && router.push(`/studio/motion?job=${job.id}`)}
       >
-        Motion
+        {kept ? "Motion" : "Keep one still"}
       </PointButton>
     </StudioShell>
   );
