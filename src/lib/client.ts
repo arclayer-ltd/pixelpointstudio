@@ -1,19 +1,37 @@
 import type { Job, Product, SessionUser, Shop } from "./types";
 
+function timedFetch(input: RequestInfo, init?: RequestInit, ms = 90000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(input, {
+    ...init,
+    cache: "no-store",
+    credentials: "same-origin",
+    signal: ctrl.signal,
+  }).finally(() => clearTimeout(timer));
+}
+
 async function parse<T>(res: Response | Promise<Response>): Promise<T> {
-  const resolved = await res;
-  const body = (await resolved.json()) as T & { error?: string };
-  if (!resolved.ok) {
-    throw new Error(body.error || `Request failed (${resolved.status})`);
+  try {
+    const resolved = await res;
+    const body = (await resolved.json()) as T & { error?: string };
+    if (!resolved.ok) {
+      throw new Error(body.error || `Request failed (${resolved.status})`);
+    }
+    return body;
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "AbortError") {
+      throw new Error("Request timed out.");
+    }
+    throw e;
   }
-  return body;
 }
 
 export const api = {
-  session: () => parse<{ user: SessionUser | null }>(fetch("/api/auth/session")),
+  session: () => parse<{ user: SessionUser | null }>(timedFetch("/api/auth/session")),
   signIn: (email: string, mode: "magic" | "local" = "local") =>
     parse<{ user?: SessionUser; sent?: boolean; url?: string }>(
-      fetch("/api/auth/session", {
+      timedFetch("/api/auth/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, mode }),
@@ -21,21 +39,21 @@ export const api = {
     ),
   google: () =>
     parse<{ url?: string }>(
-      fetch("/api/auth/session", {
+      timedFetch("/api/auth/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: "google" }),
       }),
     ),
-  signOut: () => fetch("/api/auth/session", { method: "DELETE" }),
-  jobs: () => parse<{ shop: Shop; jobs: Job[] }>(fetch("/api/jobs")),
+  signOut: () => timedFetch("/api/auth/session", { method: "DELETE" }),
+  jobs: () => parse<{ shop: Shop; jobs: Job[] }>(timedFetch("/api/jobs")),
   createJob: () =>
-    parse<{ job: Job }>(fetch("/api/jobs", { method: "POST" })),
-  job: (id: string) => parse<{ job: Job }>(fetch(`/api/jobs/${id}`)),
-  products: () => parse<{ products: Product[] }>(fetch("/api/products")),
+    parse<{ job: Job }>(timedFetch("/api/jobs", { method: "POST" })),
+  job: (id: string) => parse<{ job: Job }>(timedFetch(`/api/jobs/${id}`)),
+  products: () => parse<{ products: Product[] }>(timedFetch("/api/products")),
   fixture: (jobId: string) =>
     parse<{ url: string; job: Job }>(
-      fetch("/api/fixture", {
+      timedFetch("/api/fixture", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId }),
@@ -47,12 +65,12 @@ export const api = {
     form.set("slot", slot);
     form.set("file", file);
     return parse<{ url: string; job: Job }>(
-      fetch("/api/upload", { method: "POST", body: form }),
+      timedFetch("/api/upload", { method: "POST", body: form }),
     );
   },
   facts: (jobId: string, facts: Job["facts"]) =>
     parse<{ job: Job }>(
-      fetch("/api/facts", {
+      timedFetch("/api/facts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId, facts }),
@@ -60,7 +78,7 @@ export const api = {
     ),
   copy: (jobId: string) =>
     parse<{ job: Job }>(
-      fetch("/api/copy", {
+      timedFetch("/api/copy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId }),
@@ -68,7 +86,7 @@ export const api = {
     ),
   stills: (jobId: string) =>
     parse<{ job: Job }>(
-      fetch("/api/stills", {
+      timedFetch("/api/stills", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId }),
@@ -79,7 +97,7 @@ export const api = {
     payload: { stillId?: string; verdict?: "keep" | "reject"; regenerate?: boolean },
   ) =>
     parse<{ job: Job }>(
-      fetch("/api/judge", {
+      timedFetch("/api/judge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId, ...payload }),
@@ -87,7 +105,7 @@ export const api = {
     ),
   motion: (jobId: string, audioMode: "original" | "none") =>
     parse<{ job: Job }>(
-      fetch("/api/motion", {
+      timedFetch("/api/motion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId, audioMode }),
@@ -95,11 +113,11 @@ export const api = {
     ),
   exportPack: (jobId: string) =>
     parse<{ job: Job }>(
-      fetch("/api/export", {
+      timedFetch("/api/export", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId }),
       }),
     ),
-  health: () => parse<unknown>(fetch("/api/health")),
+  health: () => parse<unknown>(timedFetch("/api/health")),
 };
