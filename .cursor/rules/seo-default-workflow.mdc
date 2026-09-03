@@ -1,0 +1,21 @@
+---
+description: Default SEO workflow for this repository. Always load the matching vendored SEO skill before site, content, search, or app-store work.
+alwaysApply: true
+---
+
+# Default SEO skills
+
+This repo vendors six SEO skills as **default workflow**. They are not optional.
+
+Before any site, page, content, search, metadata, or app-store work, read the matching skill and follow it:
+
+- Vague SEO, technical SEO, rankings, indexing, meta tags, CWV → `.agents/skills/seo-audit/SKILL.md`
+- AI search / AEO / GEO / LLM citations / `llms.txt` → `.agents/skills/ai-seo/SKILL.md`
+- Pages at scale from templates or data → `.agents/skills/programmatic-seo/SKILL.md`
+- JSON-LD / schema.org / rich results → `.agents/skills/schema/SKILL.md`
+- App Store or Google Play listing → `.agents/skills/aso/SKILL.md`
+- IA, nav, URL structure, internal linking → `.agents/skills/site-architecture/SKILL.md`
+
+Copies also live under `.cursor/skills/`. Prefer `.agents/skills/` as the source of truth.
+
+If the request is only “help with SEO,” start with `seo-audit`.
