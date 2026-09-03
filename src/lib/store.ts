@@ -5,7 +5,10 @@ import { supabaseConfigured } from "./env";
 import { id, nowIso } from "./ids";
 import type { Job, Product, ProductFacts, SessionUser, Shop } from "./types";
 
-const DATA = join(process.cwd(), ".data", "store.json");
+const DATA_ROOT = process.env.VERCEL
+  ? join("/tmp", "ownershot")
+  : join(process.cwd(), ".data");
+const DATA = join(DATA_ROOT, "store.json");
 
 type Disk = {
   users: SessionUser[];

@@ -53,7 +53,10 @@ function MotionInner() {
         sub="Original audio you upload, or none. No licensed music."
       />
       <div className="relative aspect-[9/16] max-h-[52vh] overflow-hidden bg-carbon">
-        {job?.clipUrl ? (
+        {job?.clipUrl?.match(/\.(jpg|jpeg|png|webp)(\?|$)/i) ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={job.clipUrl} alt="12s still preview" className="size-full object-cover" />
+        ) : job?.clipUrl ? (
           <video
             className="size-full object-cover"
             src={job.clipUrl}
