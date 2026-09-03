@@ -1,5 +1,7 @@
 # Pixel Point Studio — agent workflow
 
+**Locked product:** OwnerShot Ads. Read `PRODUCT.md` and `.agents/product-marketing.md` before any product, marketing, or UI work. Do not pivot the idea.
+
 These SEO skills are the **default workflow** for this repository. Future Cursor agents, Cloud Agents, and other tools that read `AGENTS.md` must treat them as installed project skills — not optional extras.
 
 ## Default SEO skills
