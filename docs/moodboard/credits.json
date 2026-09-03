@@ -1,0 +1,22 @@
+{
+  "note": "Study frames only. Do not ship these pixels. All images from Mobbin MCP, watermarked by source apps.",
+  "screens": [
+    {"file": "photoroom_home.jpg", "app": "Photoroom", "url": "https://mobbin.com/screens/fe4e7d2d-b021-4efb-bd55-4dfe12080b55", "study": "Home: tools before chrome"},
+    {"file": "photoroom_search.jpg", "app": "Photoroom", "url": "https://mobbin.com/screens/fbf706f3-d84f-4cd1-9c05-5cf6d3ffb53b", "study": "Product-photo style rails"},
+    {"file": "photoroom_studio.jpg", "app": "Photoroom", "url": "https://mobbin.com/screens/ff69d556-5801-4714-becb-3db1fc1114cd", "study": "Same subject, many backdrops"},
+    {"file": "photoroom_type.jpg", "app": "Photoroom", "url": "https://mobbin.com/screens/f3efca59-36e9-4652-aa90-835625054106", "study": "Type on the product, not a chat"},
+    {"file": "canva_dreamlab.jpg", "app": "Canva", "url": "https://mobbin.com/screens/f781e540-6a73-45ea-885f-42f9ceae5011", "study": "One prompt, one generate"},
+    {"file": "canva_magic.jpg", "app": "Canva", "url": "https://mobbin.com/screens/e9b5410c-2622-4cf0-ae37-4d0627be8f6a", "study": "Images / stills / video tabs"},
+    {"file": "canva_styles.jpg", "app": "Canva", "url": "https://mobbin.com/screens/ec62ca30-50eb-4f3f-a480-f0d8ddaf4f88", "study": "Style grid, same subject"},
+    {"file": "shopify_add.jpg", "app": "Shopify", "url": "https://mobbin.com/screens/fcf26f79-4747-4ae4-9eca-a72aef95f941", "study": "Media + title + price stack"},
+    {"file": "shopify_list.jpg", "app": "Shopify", "url": "https://mobbin.com/screens/eab2fe5e-4828-4aeb-95fb-31806cd5fdbd", "study": "Library of owner products"},
+    {"file": "shopify_meta.jpg", "app": "Shopify", "url": "https://mobbin.com/screens/ff53d6e2-dada-42c9-8c8f-5854256ab972", "study": "Facts as rows, not a prompt dump"},
+    {"file": "whatnot_cam.jpg", "app": "Whatnot", "url": "https://mobbin.com/screens/b1e48a3c-435b-419e-b542-275daba7e001", "study": "Cover frame + grid"},
+    {"file": "whatnot_sheet.jpg", "app": "Whatnot", "url": "https://mobbin.com/screens/daca0ada-b898-4266-8e3c-5ee610004e98", "study": "Camera vs library sheet"},
+    {"file": "whatnot_form.jpg", "app": "Whatnot", "url": "https://mobbin.com/screens/d37e43d0-959f-411a-9fc0-806cfdb432c1", "study": "Cover + title + desc limits"},
+    {"file": "whatnot_wait.jpg", "app": "Whatnot", "url": "https://mobbin.com/screens/c966f158-0ff3-4da3-9bab-bd1e50ab4248", "study": "Blocking wait on create"},
+    {"file": "alta_regen.jpg", "app": "Alta", "url": "https://mobbin.com/screens/9aae0897-7b98-48c9-8ebd-d16dcfa1219c", "study": "Reject / keep / regenerate"},
+    {"file": "capcut_export.jpg", "app": "CapCut", "url": "https://mobbin.com/screens/0817efa5-475d-47db-b95e-ddf474865ef7", "study": "Progress on the preview"},
+    {"file": "capcut_share.jpg", "app": "CapCut", "url": "https://mobbin.com/screens/46d36017-a82d-4c33-8e24-2b6151be4cd6", "study": "Share after the file exists"}
+  ]
+}

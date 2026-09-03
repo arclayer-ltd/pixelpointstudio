@@ -1,0 +1,6 @@
+---
+description: YOLO build of OwnerShot Ads from phase 0 to SHIP with Grok 4.6 human-use and creative-director sub-agents.
+alwaysApply: false
+---
+
+If the user is building the app, pastes the master prompt, or says YOLO / phase 0 / until finished: read `docs/MASTER_PROMPT.md` and follow it exactly. Same model on every sub-agent. Do not stop for API keys. Do not ship without both SHIP verdicts on one SHA.
