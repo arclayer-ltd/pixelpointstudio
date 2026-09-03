@@ -44,9 +44,16 @@ export async function POST(request: Request) {
   }
 
   if (!email) return fail("Email is required.");
-  const user = { id: `local-${id()}`, email, source: "local" as const };
-  await writeLocalSession(user);
   const store = getStore();
+  const existing = await store.userByEmail(email);
+  const user =
+    existing ??
+    (await store.rememberUser({
+      id: `local-${id()}`,
+      email,
+      source: "local",
+    }));
+  await writeLocalSession(user);
   await store.ensureShop(user);
   return json({ user, provider: "local" });
 }

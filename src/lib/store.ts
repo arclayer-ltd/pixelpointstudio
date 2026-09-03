@@ -8,18 +8,25 @@ import type { Job, Product, ProductFacts, SessionUser, Shop } from "./types";
 const DATA = join(process.cwd(), ".data", "store.json");
 
 type Disk = {
+  users: SessionUser[];
   shops: Shop[];
   products: Product[];
   jobs: Job[];
 };
 
 function empty(): Disk {
-  return { shops: [], products: [], jobs: [] };
+  return { users: [], shops: [], products: [], jobs: [] };
 }
 
 function load(): Disk {
   try {
-    return JSON.parse(readFileSync(DATA, "utf8")) as Disk;
+    const raw = JSON.parse(readFileSync(DATA, "utf8")) as Partial<Disk>;
+    return {
+      users: raw.users ?? [],
+      shops: raw.shops ?? [],
+      products: raw.products ?? [],
+      jobs: raw.jobs ?? [],
+    };
   } catch {
     return empty();
   }
@@ -31,6 +38,8 @@ function save(disk: Disk) {
 }
 
 export type Store = {
+  userByEmail(email: string): Promise<SessionUser | null>;
+  rememberUser(user: SessionUser): Promise<SessionUser>;
   ensureShop(user: SessionUser): Promise<Shop>;
   listJobs(ownerId: string): Promise<Job[]>;
   listProducts(ownerId: string): Promise<Product[]>;
@@ -48,6 +57,18 @@ export type Store = {
 
 function localStore(): Store {
   return {
+    async userByEmail(email) {
+      const needle = email.trim().toLowerCase();
+      return load().users.find((u) => u.email === needle) ?? null;
+    },
+    async rememberUser(user) {
+      const disk = load();
+      const existing = disk.users.find((u) => u.email === user.email);
+      if (existing) return existing;
+      disk.users.push(user);
+      save(disk);
+      return user;
+    },
     async ensureShop(user) {
       const disk = load();
       let shop = disk.shops.find((s) => s.ownerId === user.id);
@@ -155,6 +176,12 @@ function supabaseStore(): Store {
   if (!admin) return localStore();
 
   return {
+    async userByEmail() {
+      return null;
+    },
+    async rememberUser(user) {
+      return user;
+    },
     async ensureShop(user) {
       await admin.from("profiles").upsert({
         id: user.id,
