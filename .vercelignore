@@ -1,0 +1,11 @@
+mobile
+docs/moodboard
+docs/ownershot-ads-design-deck.pdf
+.agents
+.cursor
+.data
+.queue-data
+store
+server
+*.md
+!README.md
